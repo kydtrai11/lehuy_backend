@@ -12,7 +12,7 @@ const app = express();
 
 /* ===== CORS đơn giản ===== */
 app.use(cors({
-  origin: 'http://localhost:3001', // ✅ FE chạy ở đây
+  origin: '*',// ✅ FE chạy ở đây
   credentials: true,               // ✅ để cookie gửi kèm
 }));
 
@@ -39,3 +39,4 @@ const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`✅ Backend is running at http://localhost:${PORT}`);
 });
+
