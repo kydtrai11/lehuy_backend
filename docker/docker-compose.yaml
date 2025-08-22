@@ -25,7 +25,7 @@ services:
     # - DB_HOST=host.docker.internal
     ports:
       - 1112:1112
-    depends_on:
-      - database
+    # depends_on:
+    #   - database
 # volumes:
 #   fesManhwa_volume: # docker compose -p fesmanhwa up -d
