@@ -19,8 +19,8 @@ services:
       context: ..
       dockerfile: Dockerfile
     restart: unless-stopped
-    # environment:
-    #   - DB_PORT=3306
+    environment:
+      - JWT_SECRET=Vanluy12345
     #   - DB_HOST=database
     # - DB_HOST=host.docker.internal
     ports:

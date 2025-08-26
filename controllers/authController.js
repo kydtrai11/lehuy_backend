@@ -6,8 +6,8 @@ const isProd = process.env.NODE_ENV === 'production';
 // Tùy theo triển khai: dev (cùng localhost) dùng SameSite=Lax, prod khác domain dùng None+Secure
 const cookieOpts = {
   httpOnly: true,
-  sameSite: isProd ? 'none' : 'lax',
-  secure: isProd, // bắt buộc true nếu SameSite=None & HTTPS
+  sameSite: 'none',
+  secure: true, // bắt buộc khi SameSite=None
   path: '/',
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngày
 };
