@@ -20,21 +20,21 @@ if (!fs.existsSync(keyFile)) {
 
 const auth = new google.auth.GoogleAuth({
   keyFile,
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'], 
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
 const sheets = google.sheets({ version: 'v4', auth });
 
 const asText = (v) =>
-  (typeof v === 'object' && v
-    ? [v.color ? `Màu: ${v.color}` : null, v.size ? `Size: ${v.size}` : null]
-        .filter(Boolean).join('; ')
-    : (v || ''));
+(typeof v === 'object' && v
+  ? [v.color ? `Màu: ${v.color}` : null, v.size ? `Size: ${v.size}` : null]
+    .filter(Boolean).join('; ')
+  : (v || ''));
 
 exports.appendOrder = async (order) => {
 
-const spreadsheetId = (process.env.GS_SHEET_ID || '').trim();
-console.log('[Sheets] Using sheet:', JSON.stringify(spreadsheetId), 'length=', spreadsheetId.length);
+  const spreadsheetId = (process.env.GS_SHEET_ID || '').trim();
+  console.log('[Sheets] Using sheet:', JSON.stringify(spreadsheetId), 'length=', spreadsheetId.length);
 
   if (!spreadsheetId) throw new Error('Missing GS_SHEET_ID');
 
@@ -71,7 +71,6 @@ console.log('[Sheets] Using sheet:', JSON.stringify(spreadsheetId), 'length=', s
       insertDataOption: 'INSERT_ROWS',
       requestBody: { values },
     });
-
     console.log('Successfully appended order to sheet:', order.id);
     return `https://docs.google.com/spreadsheets/d/${spreadsheetId}`;
   } catch (err) {
@@ -89,6 +88,7 @@ console.log('[Sheets] Using sheet:', JSON.stringify(spreadsheetId), 'length=', s
     }
 
     // Các lỗi khác (mạng, quota, JSON sai nội dung, ...)
+    // console.log(err);
     throw new Error('Lỗi khi lưu đơn hàng vào Google Sheet: ' + (err.message || 'Unknown'));
   }
 };
