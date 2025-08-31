@@ -1,15 +1,15 @@
 // backend/controllers/orderController.js
-const { appendOrder } = require('../services/sheetsService');
-const { notifyNewOrder } = require('../services/mailService');
+// KHÔNG còn import sheetsService
+const { notifyNewOrder } = require('../services/mailService'); // optional, có thể bỏ nếu bạn không gửi email
 
 exports.createOrder = async (req, res) => {
   try {
-    console.log(22222222);
-
     console.log('Received order request:', req.body);
     const b = req.body || {};
     const customer = b.customer || {};
     const productName = b.productName || b.name;
+
+    // Cho phép lấy thông tin từ b.customer hoặc trực tiếp trong body
     const fullName = b.fullName || customer.fullName;
     const phone = b.phone || customer.phone;
     const address = b.address || customer.address;
@@ -20,11 +20,12 @@ exports.createOrder = async (req, res) => {
     }
 
     const qty = Number(b.quantity || 1) || 1;
-    const p = Number(b.price || 0) || 0;
+    const price = Number(b.price || 0) || 0;
 
-    const variantStr = typeof b.variant === 'object' && b.variant
+    const variantStr = (typeof b.variant === 'object' && b.variant)
       ? [b.variant.color ? `Màu: ${b.variant.color}` : null,
-      b.variant.size ? `Size: ${b.variant.size}` : null].filter(Boolean).join('; ')
+      b.variant.size ? `Size: ${b.variant.size}` : null]
+        .filter(Boolean).join('; ')
       : (b.variant || '');
 
     const order = {
@@ -33,24 +34,30 @@ exports.createOrder = async (req, res) => {
       productName,
       variant: variantStr,
       quantity: qty,
-      price: p,
-      total: p * qty,
-      fullName, phone, address, note,
+      price,
+      total: price * qty,
+      fullName,
+      phone,
+      address,
+      note,
+      // có thể thêm createdAt: new Date() nếu bạn muốn
     };
-    console.log(11111111);
 
-    // const sheetLink = await appendOrder(order);
-    await notifyNewOrder(order);
+    // ❌ Không ghi Google Sheet nữa
+    // ✅ (Tuỳ chọn) gửi email thông báo; nếu fail thì vẫn trả ok
+    try {
+      if (notifyNewOrder) {
+        await notifyNewOrder(order /* , sheetLink */);
+      }
+    } catch (mailErr) {
+      console.warn('[Mail] send failed but order continues:', mailErr?.message || mailErr);
+    }
+
     console.log('Order created successfully:', order.id);
-    res.json({ ok: true, orderId: order.id });
+    return res.json({ ok: true, orderId: order.id });
   } catch (e) {
     console.error('createOrder error:', e);
     const errorMessage = e.message || 'Không thể tạo đơn';
-    // console.error('Detailed error:', e.stack);
-    res.status(500).json({
-      ok: false,
-      message: errorMessage,
-      detail: process.env.NODE_ENV === 'development' ? e.stack : undefined
-    });
+    return res.status(500).json({ ok: false, message: errorMessage });
   }
 };

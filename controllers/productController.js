@@ -17,13 +17,13 @@ const getAllProducts = async (req, res) => {
     // thêm điều kiện tìm kiếm tự do
     if (q) {
       filter.$or = [
-        { name:        { $regex: q, $options: 'i' } },
+        { name: { $regex: q, $options: 'i' } },
         { description: { $regex: q, $options: 'i' } },
-        { material:    { $regex: q, $options: 'i' } },
-        { colors:      { $regex: q, $options: 'i' } },
-        { sizes:       { $regex: q, $options: 'i' } },
+        { material: { $regex: q, $options: 'i' } },
+        { colors: { $regex: q, $options: 'i' } },
+        { sizes: { $regex: q, $options: 'i' } },
         { 'variants.color': { $regex: q, $options: 'i' } },
-        { 'variants.size':  { $regex: q, $options: 'i' } },
+        { 'variants.size': { $regex: q, $options: 'i' } },
       ];
     }
 
@@ -86,6 +86,7 @@ const createProduct = async (req, res) => {
     res.status(201).json(newProduct);
   } catch (err) {
     console.error('Lỗi khi tạo sản phẩm:', err);
+    console.log(err);
     res.status(500).json({ message: 'Lỗi server khi tạo sản phẩm' });
   }
 };
