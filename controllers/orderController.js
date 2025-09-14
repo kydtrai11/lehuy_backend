@@ -1,6 +1,4 @@
-// backend/controllers/orderController.js
-// KHÔNG còn import sheetsService
-const { notifyNewOrder } = require('../services/mailService'); // optional, có thể bỏ nếu bạn không gửi email
+const { notifyNewOrder } = require('../services/mailService');
 
 exports.createOrder = async (req, res) => {
   try {
