@@ -5,6 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js -p ",
+    "git": "git add . && git commit -m 'asd' && git push -u origin main",
     "dev": "nodemon server.js"
   },
   "keywords": [],

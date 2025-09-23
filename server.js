@@ -9,11 +9,10 @@ dotenv.config();
 connectDB();
 
 const app = express();
-
 /* ===== CORS đơn giản ===== */
 app.use(cors({
   origin: '*',// ✅ FE chạy ở đây
-  credentials: true,               // ✅ để cookie gửi kèm
+  credentials: true,    // ✅ để cookie gửi kèm
 }));
 
 /* ===== Middleware ===== */
