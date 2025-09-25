@@ -6,37 +6,32 @@ const {
   getAllProducts,
   getProductById,
   updateProduct,
-  deleteProduct, // ✅ Bổ sung đúng tại đây
+  deleteProduct,
 } = require('../controllers/productController');
 
 const upload = require('../middleware/upload');
 
-// ✅ Xoá sản phẩm
+// Xoá sản phẩm
 router.delete('/:id', deleteProduct);
 
-// ✅ Lấy chi tiết sản phẩm theo ID
+// Lấy chi tiết sản phẩm theo ID
 router.get('/:id', getProductById);
 
-// ✅ Lấy toàn bộ sản phẩm
+// Lấy toàn bộ sản phẩm
 router.get('/', getAllProducts);
 
-// ✅ Tạo sản phẩm mới
+// Tạo sản phẩm mới
 router.post(
   '/',
-  upload.fields([
-    { name: 'main', maxCount: 1 },
-    { name: 'variantImages' },
-  ]),
+  // ✅ nhận tất cả file: images + variantImages_0, variantImages_1...
+  upload.any(),
   createProduct
 );
 
-// ✅ Cập nhật sản phẩm (ghi đè)
+// Cập nhật sản phẩm
 router.put(
   '/:id',
-  upload.fields([
-    { name: 'main', maxCount: 1 },
-    { name: 'variantImages' },
-  ]),
+  upload.any(),
   updateProduct
 );
 
