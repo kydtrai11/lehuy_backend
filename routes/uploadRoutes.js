@@ -4,7 +4,8 @@ const path = require('path');
 const fs = require('fs');
 const router = express.Router();
 
-const descDir = path.join(__dirname, '../uploads');
+const descDir = path.join(process.cwd(), 'uploads');
+
 if (!fs.existsSync(descDir)) {
   fs.mkdirSync(descDir, { recursive: true });
 }
