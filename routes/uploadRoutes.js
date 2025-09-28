@@ -5,7 +5,7 @@ const fs = require('fs');
 const router = express.Router();
 
 // Đường dẫn tương đối
-const descDir = '../uploads';
+const descDir = path.join(__dirname, 'uploads');
 
 // Kiểm tra và tạo thư mục
 try {
