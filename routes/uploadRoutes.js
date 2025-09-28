@@ -3,48 +3,41 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const router = express.Router();
-const upload = require('../middleware/upload');
 
 // Đường dẫn tương đối
-// const descDir = path.join(__dirname, 'uploads');
+const descDir = '/home/kydtrai11/lehuy_backend/uploads';
 
-// // Kiểm tra và tạo thư mục
-// try {
-//   if (!fs.existsSync(descDir)) {
-//     fs.mkdirSync(descDir, { recursive: true });
-//     console.log(`Thư mục ${descDir} đã được tạo.`);
-//   } else {
-//     console.log(`Thư mục ${descDir} đã tồn tại.`);
-//   }
-// } catch (err) {
-//   console.error(`Lỗi khi tạo thư mục ${descDir}:`, err);
-// }
+// Kiểm tra và tạo thư mục
+try {
+  if (!fs.existsSync(descDir)) {
+    fs.mkdirSync(descDir, { recursive: true });
+    console.log(`Thư mục ${descDir} đã được tạo.`);
+  } else {
+    console.log(`Thư mục ${descDir} đã tồn tại.`);
+  }
+} catch (err) {
+  console.error(`Lỗi khi tạo thư mục ${descDir}:`, err);
+}
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     console.log('Đang lưu vào:', descDir);
-//     cb(null, descDir);
-//   },
-//   filename: (req, file, cb) => {
-//     const uniqueName = Date.now() + '-' + file.originalname;
-//     cb(null, uniqueName);
-//   },
-// });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    console.log('Đang lưu vào:', descDir);
+    cb(null, descDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + '-' + file.originalname;
+    cb(null, uniqueName);
+  },
+});
 
-// const upload = multer({ storage });
+const upload = multer({ storage });
 
 // Upload 1 ảnh
-router.post('/', (req, res) => {
-  try {
-    console.log('File:', req.file);
-    upload.any()
-    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-    const url = `/uploads/${req.file.filename}`;
-    res.json({ url });
-  } catch (error) {
-    console.log(error);
-  }
-
+router.post('/', upload.single('image'), (req, res) => {
+  console.log('File:', req.file);
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+  const url = `/uploads/${req.file.filename}`;
+  res.json({ url });
 });
 
 module.exports = router;
