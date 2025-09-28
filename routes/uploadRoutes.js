@@ -4,8 +4,8 @@ const path = require('path');
 const fs = require('fs');
 const router = express.Router();
 
-// Đường dẫn tương đối
-const descDir = '/home/kydtrai11/lehuy_backend/uploads';
+// Đường dẫn tương đối tới thư mục uploads
+const descDir = path.join(__dirname, 'uploads');
 
 // Kiểm tra và tạo thư mục
 try {

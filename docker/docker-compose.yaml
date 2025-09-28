@@ -25,6 +25,8 @@ services:
     # - DB_HOST=host.docker.internal
     ports:
       - 5001:5001
+    volumes:
+      - /home/kydtrai11/lehuy_backend/uploads:/app/routes/Uploads 
     # depends_on:
     #   - database
 # volumes:
