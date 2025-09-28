@@ -5,14 +5,14 @@ const fs = require('fs');
 const router = express.Router();
 
 // Thư mục uploads nằm trong project
-const descDir = path.join(process.cwd(), '../uploads');
+const descDir = path.join(__dirname, '../uploads');
 if (!fs.existsSync(descDir)) {
   fs.mkdirSync(descDir, { recursive: true });
 }
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, descDir); // Lưu file vào thư mục uploads trong project
+    cb(null, 'uploads'); // lưu trong thư mục uploads/
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
