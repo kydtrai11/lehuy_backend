@@ -23,8 +23,6 @@ services:
       - JWT_SECRET=Vanluy12345
     #   - DB_HOST=database
     # - DB_HOST=host.docker.internal
-    volumes:
-      - /home/kydtrai11/lehuy_backend/uploads:/app/uploads
     ports:
       - 5001:5001
     # depends_on:

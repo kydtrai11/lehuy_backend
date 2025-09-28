@@ -4,18 +4,29 @@ const path = require('path');
 const fs = require('fs');
 const router = express.Router();
 
-// Thư mục uploads nằm trong project
-const descDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(descDir)) {
-  fs.mkdirSync(descDir, { recursive: true });
+// Đường dẫn tương đối
+const descDir = 'uploads';
+
+// Kiểm tra và tạo thư mục
+try {
+  if (!fs.existsSync(descDir)) {
+    fs.mkdirSync(descDir, { recursive: true });
+    console.log(`Thư mục ${descDir} đã được tạo.`);
+  } else {
+    console.log(`Thư mục ${descDir} đã tồn tại.`);
+  }
+} catch (err) {
+  console.error(`Lỗi khi tạo thư mục ${descDir}:`, err);
 }
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '/app/uploads'); // lưu trong thư mục uploads/
+    console.log('Đang lưu vào:', descDir);
+    cb(null, descDir);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    const uniqueName = Date.now() + '-' + file.originalname;
+    cb(null, uniqueName);
   },
 });
 
@@ -23,9 +34,8 @@ const upload = multer({ storage });
 
 // Upload 1 ảnh
 router.post('/', upload.single('image'), (req, res) => {
-  console.log(req.file);
+  console.log('File:', req.file);
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-  // Chỉ trả về URL public, không phải đường dẫn tuyệt đối trong container
   const url = `/uploads/${req.file.filename}`;
   res.json({ url });
 });
