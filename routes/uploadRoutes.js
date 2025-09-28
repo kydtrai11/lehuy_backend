@@ -12,7 +12,7 @@ if (!fs.existsSync(descDir)) {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads'); // lưu trong thư mục uploads/
+    cb(null, descDir); // lưu trong thư mục uploads/
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
